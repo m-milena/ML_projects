@@ -1,15 +1,14 @@
-import numpy as np
 import cv2
 from load_dataset import load_dataset
-from sklearn.cluster import KMeans
 
 def main():
-    X, y, labels_dict = load_dataset('./dataset/')
-    feat_detect = cv2.AKAZE_create()
-    features = []
+    X, y, y_dictionary = load_dataset('./dataset_train/')
     for img in X:
-        kpt, des = feat_detect.detectAndCompute(img, None)
-        features.append(des)
+        key = ord('a')
+        while key!= ord('q'):
+            cv2.imshow('d', img)
+            key = cv2.waitKey(3)
+
 
 if __name__ == '__main__':
     main()
