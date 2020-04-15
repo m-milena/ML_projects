@@ -21,6 +21,14 @@ def main():
     features = []
     for img in X_norm:
         kpt, des = feature_detector_descriptor.detectAndCompute(img, None) 
+        #img = cv2.drawKeypoints(img,kpt,img)
+        #print(kpt)
+        #pts2f = cv2.KeyPoint_convert(kpt)
+        #print(pts2f)
+        #key = ord('a')
+        #while key != ord('q'):
+        #    cv2.imshow('d', img)
+        #    key = cv2.waitKey(3)
         features.extend(des)
     features = np.array(features)
     print(features.shape)
