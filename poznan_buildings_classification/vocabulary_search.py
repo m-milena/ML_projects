@@ -21,26 +21,21 @@ def main():
     features = []
     for img in X_norm:
         kpt, des = feature_detector_descriptor.detectAndCompute(img, None) 
-        #img = cv2.drawKeypoints(img,kpt,img)
-        #print(kpt)
-        #pts2f = cv2.KeyPoint_convert(kpt)
-        #print(pts2f)
-        #key = ord('a')
-        #while key != ord('q'):
-        #    cv2.imshow('d', img)
-        #    key = cv2.waitKey(3)
         features.extend(des)
     features = np.array(features)
     print(features.shape)
 
-    # Create vocabulary
-    nb_words = 20
-    k_means = KMeans(n_clusters = nb_words)
-    k_means.fit(features)
-    
-    # Save model vocabulary
-    vocab_filename = './vocabulary_models/vocabulary_'+str(nb_words)+'words.sav'
-    pickle.dump(k_means, open(vocab_filename, 'wb'))
+    # Search vocabulary
+    cnt = range(0, 5, 1)
+    nb_words = range(5, 50, 5)
+    for words in nb_words:
+        for i in cnt:
+            k_means = KMeans(n_clusters = words)
+            k_means.fit(features)
+            # Save model vocabulary
+            vocab_filename = './vocabulary_models/vocabulary'+str(i)+'_'+str(nb_words)+'words.sav'
+            pickle.dump(k_means, open(vocab_filename, 'wb'))
+            print('Saved model number '+str(i) + 'with words' +str(words))
 
 
 if __name__ == '__main__':
