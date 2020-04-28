@@ -1,6 +1,7 @@
 # Poznan's buildings classificator
 
 Project from Advanced Image Processing subject to classify 5 popular buildings in Poznan using Bag of Words model.
+
 ## Requirements
 * opencv-contrib-python 3.4.2.16
 * scikit-learn 0.22.2
