@@ -21,4 +21,4 @@ Scores on data are presented below:
 
 Confusion matrix of test data:
 
-<img src="https://github.com/m-milena/ML_projects/tree/master/poznan_buildings_classification/visualisation/confusion_matrix.png" width="600">
+<img src="https://github.com/m-milena/ML_projects/blob/master/poznan_buildings_classification/visualisation/confusion_matrix.png?raw=true" width="600">
