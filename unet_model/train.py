@@ -1,29 +1,35 @@
-import keras
-import keras.backend as K
-from keras.models import Model
-from unet_keras import UNet
+import cv2
+import torch
 
-def train():
-    # Load dataset 
-    # ...
-    img_size = (128,128,1)
-    input_layer = keras.layers.Input(img_size)
-    output_layer = UNet(input_layer, size=16, out = 1)
+from dataset import Dataset, Preprocessing
+from torchvision import transforms, utils
+
+def main():
+    # CUDA for PyTorch
+    use_cuda = torch.cuda.is_available()
+    device = torch.device('cuda:0' if use_cuda else 'cpu')
+    torch.backends.cudnn.benchmark = True
     
-    model = Model(inputs=input_layer, outputs=output_layer)
-    adam = optimizers.Adam(lr=0.001)
-    model.compile(loss=custom_loss, optimizer='adam', metrics=["accuracy"])
-    filepath="weights.best.hdf5"
-    checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
-    callbacks = [checkpoint]
+    params = {'batch_size': 50,
+              'shuffle': True,
+              'num_workers': 4}
+    max_epochs = 100
+    
+    # Load dataset
+    data_path = '../../../generated_data/'
+    my_dataset = Dataset(data_path, 
+                    transform=transforms.Compose([
+                        Preprocessing()]))
 
-    batch_size = 20
-    epochs = 400
-    # Training
-    hist = model.fit(x_train, y_train, batch_size = batch_size,\
-            epochs = epochs, validation_data = (x_val, y_val),  \
-            callbacks = callbacks)
-    model.summary()
+    training_generator = torch.utils.data.DataLoader(my_dataset, **params)
+    #data_iter = iter(training_generator)
+    #in_, out_ = data_iter.next()
+    #print(in_.shape)
+    #print(out_.shape)
+    for epoch in range(max_epochs):
+        for local_batch, local_labels in training_generator:
+            local_batch, local_labels = local_batch.to(device), local_labels.to(device)
+        
 
 if __name__ == '__main__':
-    train()
+    main()
